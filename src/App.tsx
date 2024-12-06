@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
 import { Home } from './pages/Home';
@@ -7,8 +6,8 @@ import { Cart } from './pages/Cart';
 import { Wishlist } from './pages/Wishlist';
 import { Profile } from './pages/Profile';
 import { Footer } from './components/Footer';
-import Signin from './pages/signin';
-import Signup from './pages/Signup';
+import SignUp from './pages/SignUpPage';
+import SignIn from './pages/SignInPage';
 
 function App() {
   return (
@@ -22,8 +21,8 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/signin" element={<Signin />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
           </Routes>
         </main>
         <Footer />
