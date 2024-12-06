@@ -3,7 +3,6 @@ import { ProductGrid } from '../components/products/ProductGrid';
 import { ProductFilters } from '../components/products/ProductFilters';
 import { ProductSort } from '../components/products/ProductSort';
 import { useProducts } from '../hooks/useProducts';
-import type { Product } from '../types';
 
 const categories = [
   { id: 'electronics', name: 'Electronics' },

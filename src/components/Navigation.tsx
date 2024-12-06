@@ -55,7 +55,10 @@ export const Navigation: React.FC = () => {
                 </Button>
               </Link>
             ) : (
-              <Button>Sign In</Button>
+              <Link to="/signin">
+                <Button>Sign In</Button>
+              </Link>
+
             )}
           </div>
 

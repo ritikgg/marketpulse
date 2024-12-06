@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { products, getProductsByCategory } from '../data/products';
+import { products, getProductsByCategory, getProductById } from '../data/products';
 import type { Product } from '../types';
 
 export function useProducts(category?: string) {
