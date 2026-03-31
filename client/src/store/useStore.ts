@@ -7,6 +7,7 @@ interface Store {
   cart: CartItem[];
   wishlist: Product[];
   setUser: (user: User | null) => void;
+  clearUser: () => void;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
   updateCartQuantity: (productId: string, quantity: number) => void;
@@ -21,6 +22,7 @@ export const useStore = create<Store>()(
       cart: [],
       wishlist: [],
       setUser: (user) => set({ user }),
+      clearUser: () => set({ user: null }),
       addToCart: (product) =>
         set((state) => {
           const existingItem = state.cart.find((item) => item.id === product.id);

@@ -5,7 +5,7 @@ import { useStore } from '../store/useStore';
 import { Button } from './ui/Button';
 
 export const Navigation: React.FC = () => {
-  const { cart, user } = useStore();
+  const { cart, user, clearUser } = useStore();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
@@ -49,16 +49,26 @@ export const Navigation: React.FC = () => {
               </Button>
             </Link>
             {user ? (
-              <Link to="/profile">
-                <Button variant="ghost">
-                  <User className="h-5 w-5" />
+              <>
+                <Link to="/profile">
+                  <Button variant="ghost">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </Link>
+                <Button variant="ghost" onClick={() => {
+                  localStorage.removeItem('token');
+                  clearUser();
+                }}>
+                  Logout
                 </Button>
-              </Link>
+              </>
             ) : (
-              <Link to="/signin">
-                <Button>Sign In</Button>
+              <Link
+                to="/signin"
+                className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              >
+                Sign In
               </Link>
-
             )}
           </div>
 
@@ -107,15 +117,33 @@ export const Navigation: React.FC = () => {
                 Cart ({cart.length})
               </Link>
               {user ? (
+                <>
+                  <Link
+                    to="/profile"
+                    className="text-gray-600 hover:text-gray-900"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    className="text-gray-600 hover:text-gray-900"
+                    onClick={() => {
+                      localStorage.removeItem('token');
+                      clearUser();
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
                 <Link
-                  to="/profile"
+                  to="/signin"
                   className="text-gray-600 hover:text-gray-900"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Profile
+                  Sign In
                 </Link>
-              ) : (
-                <Button onClick={() => setIsMenuOpen(false)}>Sign In</Button>
               )}
             </nav>
           </div>

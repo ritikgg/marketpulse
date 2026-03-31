@@ -1,9 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { Button } from '../components/ui/Button';
 import { User, Package, Settings, CreditCard } from 'lucide-react';
 
 export const Profile: React.FC = () => {
+  const navigate = useNavigate();
   const { user } = useStore();
   const [activeTab, setActiveTab] = React.useState<'details' | 'orders' | 'settings'>('details');
 
@@ -12,7 +14,7 @@ export const Profile: React.FC = () => {
       <div className="flex flex-col items-center justify-center space-y-4 py-16">
         <h2 className="text-2xl font-bold">Please sign in</h2>
         <p className="text-gray-600">Sign in to view your profile</p>
-        <Button>Sign In</Button>
+        <Button onClick={() => navigate('/signin')}>Sign In</Button>
       </div>
     );
   }

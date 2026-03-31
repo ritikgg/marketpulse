@@ -1,14 +1,24 @@
 import React from 'react';
 import { Trash2, Plus, Minus } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../store/useStore';
 import { Button } from '../components/ui/Button';
 import { formatPrice } from '../lib/utils';
 
 export const Cart: React.FC = () => {
-  const { cart, removeFromCart, updateCartQuantity, clearCart } = useStore();
+  const { cart, removeFromCart, updateCartQuantity, clearCart, user } = useStore();
+  const navigate = useNavigate();
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const handleProceedToCheckout = () => {
+    if (!user) {
+      navigate('/signin');
+      return;
+    }
+
+    navigate('/profile');
+  };
 
   if (cart.length === 0) {
     return (
@@ -99,7 +109,9 @@ export const Cart: React.FC = () => {
                 <span>{formatPrice(total)}</span>
               </div>
             </div>
-            <Button className="w-full">Proceed to Checkout</Button>
+            <Button className="w-full" onClick={handleProceedToCheckout}>
+              Proceed to Checkout
+            </Button>
             <Button
               variant="outline"
               className="w-full"

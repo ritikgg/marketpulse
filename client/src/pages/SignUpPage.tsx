@@ -1,19 +1,62 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useStore } from '../store/useStore';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'https://marketpulse-server.onrender.com';
 
 const SignUp = () => {
+  const navigate = useNavigate();
+  const setUser = useStore((state) => state.setUser);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSignUp = (event: React.FormEvent) => {
+  const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Handle sign-up logic here
-    console.log('Signing up with:', { firstName, lastName, email, username, password, confirmPassword });
+    setError('');
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: `${firstName} ${lastName}`.trim(),
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || 'Sign up failed.');
+        setLoading(false);
+        return;
+      }
+
+      localStorage.setItem('token', data.token);
+      setUser({ id: data._id, name: data.name, email: data.email, role: 'user' });
+      setLoading(false);
+      navigate('/');
+    } catch (err) {
+      setError('Unable to sign up. Please try again.');
+      setLoading(false);
+    }
   };
 
   return (
@@ -25,6 +68,11 @@ const SignUp = () => {
         className="bg-white p-8 rounded shadow-md w-full max-w-md"
       >
         <h1 className="text-2xl font-bold mb-6 text-center">Sign Up</h1>
+        {error && (
+          <div className="mb-4 rounded border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSignUp} className="space-y-4">
           <div>
             <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">First Name:</label>
@@ -93,8 +141,12 @@ const SignUp = () => {
             />
           </div>
           <div>
-            <button type="submit" className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-              Sign Up
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading ? 'Signing up...' : 'Sign Up'}
             </button>
           </div>
         </form>

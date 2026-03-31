@@ -44,7 +44,15 @@ export const Products: React.FC = () => {
   }, [products, selectedCategory, priceRange, sortBy]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4 text-center text-slate-600">
+        <div className="h-16 w-16 rounded-full border-4 border-blue-500 border-t-transparent animate-spin" />
+        <div>
+          <p className="text-xl font-semibold">Loading products</p>
+          <p className="text-sm text-slate-500">Please wait while we fetch the latest deals for you.</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
