@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Product } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'https://marketpulse-server.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 let cachedProducts: Product[] | null = null;
 
 export function useProducts(category?: string) {
